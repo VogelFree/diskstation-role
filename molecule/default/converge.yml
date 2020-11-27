@@ -5,3 +5,6 @@
     - name: "Include diskstation"
       include_role:
         name: "diskstation-role"
+      vars:
+        username: test
+        password: test

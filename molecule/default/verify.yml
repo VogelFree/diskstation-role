@@ -32,7 +32,7 @@
 
     - name: Get the credentials file
       stat:
-        path: "/home/{{ ansible_user_id }}/.diskstation_credentials"
+        path: "~/.diskstation_credentials"
       register: credentialsfile
 
     - name: Check if credentials file exists

@@ -18,3 +18,8 @@
     - "/media/diskstation/git"
     - "/media/diskstation/home"
     - "/media/diskstation/photo"
+
+- name: Set credentials
+  template:
+    src: credentials.j2
+    dest: "~/.diskstation_credentials"
