@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include diskstation"
+      include_role:
+        name: "diskstation-role"
