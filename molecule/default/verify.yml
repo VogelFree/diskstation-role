@@ -1,0 +1,40 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars:
+    paths:
+      - "/media/diskstation/git"
+      - "/media/diskstation/home"
+      - "/media/diskstation/photo"
+
+  tasks:
+    - name: Get installed packages
+      package_facts:
+        manager: "auto"
+
+    - name: Check if cifs is installed
+      assert:
+        that: "'cifs-utils' in ansible_facts.packages"
+
+    - name: Get diskstation mounting points
+      stat:
+        path: "{{ item }}"
+      register: mountpoints
+      with_items: "{{ paths }}"
+
+    - name: Check if mounting point exists
+      assert:
+        that: "{{ item.stat.exists  }}"
+      with_items: "{{ mountpoints.results }}"
+
+    - name: Get the credentials file
+      stat:
+        path: "/home/{{ ansible_user_id }}/.diskstation_credentials"
+      register: credentialsfile
+
+    - name: Check if credentials file exists
+      assert:
+        that: "{{ credentialsfile.stat.exists }}"

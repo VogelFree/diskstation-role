@@ -1,0 +1,20 @@
+---
+- name: install required packages
+  package:
+    name:
+      - cifs-utils
+    state: present
+  become: true
+
+- name: Create mounting points
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  become: true
+  with_items:
+    - "/media/diskstation/git"
+    - "/media/diskstation/home"
+    - "/media/diskstation/photo"
