@@ -8,18 +8,25 @@
 
 - name: Create mounting points
   file:
-    path: "{{ item }}"
+    path: "/media/diskstation/{{ item }}"
     state: directory
     recurse: yes
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
   become: true
-  with_items:
-    - "/media/diskstation/git"
-    - "/media/diskstation/home"
-    - "/media/diskstation/photo"
+  with_items: "{{ folders }}"
 
 - name: Set credentials
   template:
     src: credentials.j2
     dest: "~/.diskstation_credentials"
+
+- name: Create fstab entries
+  mount:
+    src: "//{{ server }}/volume1/{{ item }}/"
+    path: "/media/diskstation/{{ item }}"
+    fstype: "cifs"
+    opts: "credentials=~/.diskstation_credentials,nounix,uid=1000,gid=1000"
+    state: present
+  become: true
+  with_items: "{{ folders }}"

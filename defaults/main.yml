@@ -1,0 +1,6 @@
+---
+# defaults file for diskstation
+folders:
+  - "home"
+  - "git"
+  - "photo"

@@ -8,3 +8,4 @@
       vars:
         username: test
         password: test
+        server: testserver
