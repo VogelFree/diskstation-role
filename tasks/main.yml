@@ -19,14 +19,17 @@
 - name: Set credentials
   template:
     src: credentials.j2
-    dest: "~/.diskstation_credentials"
+    dest: "/root//.diskstation_credentials"
+    mode: "0600"
+    owner: "root"
+  become: true
 
 - name: Create fstab entries
   mount:
-    src: "//{{ server }}/volume1/{{ item }}/"
+    src: "//{{ server }}/{{ item }}/"
     path: "/media/diskstation/{{ item }}"
     fstype: "cifs"
-    opts: "credentials=~/.diskstation_credentials,nounix,uid=1000,gid=1000"
+    opts: "iocharset=utf8,vers=3.0,credentials=/root/.diskstation_credentials,nounix,uid=1000,gid=1000"
     state: present
   become: true
   with_items: "{{ folders }}"

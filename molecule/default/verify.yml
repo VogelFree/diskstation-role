@@ -33,12 +33,15 @@
 
     - name: Get the credentials file
       stat:
-        path: "~/.diskstation_credentials"
+        path: "/root/.diskstation_credentials"
       register: credentialsfile
 
     - name: Check if credentials file exists
       assert:
-        that: "{{ credentialsfile.stat.exists }}"
+        that:
+          - "{{ credentialsfile.stat.exists }}"
+          - credentialsfile.stat.mode == "0600"
+          - credentialsfile.stat.uid == 0
 
     - name: Get the content of the /etc/fstab
       shell: "cat /etc/fstab"
@@ -46,5 +49,5 @@
 
     - name: Check if the diskstation mounts are inside
       assert:
-        that: "'//{{ server }}/volume1/{{ item }}/ /media/diskstation/{{ item }} cifs credentials=~/.diskstation_credentials,nounix,uid=1000,gid=1000 0 0' in fstab.stdout_lines"
+        that: "'//{{ server }}/{{ item }}/ /media/diskstation/{{ item }} cifs iocharset=utf8,vers=3.0,credentials=/root/.diskstation_credentials,nounix,uid=1000,gid=1000 0 0' in fstab.stdout_lines"
       with_items: "{{ paths }}"
