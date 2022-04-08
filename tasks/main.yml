@@ -29,7 +29,7 @@
     src: "//{{ server }}/{{ item }}/"
     path: "/media/diskstation/{{ item }}"
     fstype: "cifs"
-    opts: "iocharset=utf8,vers=3.0,credentials=/root/.diskstation_credentials,nounix,uid=1000,gid=1000"
+    opts: "iocharset=utf8,vers=3.0,credentials=/root/.diskstation_credentials,user,rw,nounix,uid=1000,gid=1000"
     state: present
   become: true
   with_items: "{{ folders }}"
